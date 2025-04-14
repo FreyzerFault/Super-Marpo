@@ -13,7 +13,7 @@ using Utils;
 /// </summary>
 public class GameManager : SingletonPersistent<GameManager>
 {
-	public enum GameState { MainMenu, GameOver, Playing, Paused }
+	public enum GameState { MainMenu, GameOver, Playing, Paused, GoalReached }
 	
 	[SerializeField] private GameState initialState = GameState.MainMenu;
 	private GameState _state;
@@ -42,7 +42,13 @@ public class GameManager : SingletonPersistent<GameManager>
 		
 		LoadSettings();
 	}
-	
+
+	private void Update()
+	{
+		if ( _state == GameState.Playing)
+			UpdateTime();
+	}
+
 	private void OnStateChange(GameState newState)
 	{
 		switch (newState)
@@ -65,6 +71,16 @@ public class GameManager : SingletonPersistent<GameManager>
 
 		onGameStateChanged?.Invoke();
 	}
+
+
+	#region GAME TIME
+	
+	private float _gameTime;
+	public float GameTime => _gameTime;
+
+	private void UpdateTime() => _gameTime += Time.deltaTime;
+
+	#endregion
 
 
 	#region SETTINGS

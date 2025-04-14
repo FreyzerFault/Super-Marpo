@@ -93,10 +93,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7700674898656367126}
+  - component: {fileID: 3282122535595172649}
   - component: {fileID: 4320664987685421974}
   - component: {fileID: 30370704974997831}
   - component: {fileID: 4814045478961753767}
-  - component: {fileID: 3282122535595172649}
   - component: {fileID: 3920928459693530580}
   - component: {fileID: 3677900905296414464}
   m_Layer: 8
@@ -122,6 +122,19 @@ Transform:
   - {fileID: 8407055300510186002}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3282122535595172649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8092478714780662051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd312f633218044fa1771c6e572677f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
 --- !u!95 &4320664987685421974
 Animator:
   serializedVersion: 5
@@ -275,19 +288,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &3282122535595172649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8092478714780662051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28f8dc54b8c028842976d4ff238ca894, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collectableType: 0
 --- !u!198 &3920928459693530580
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -303,7 +303,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0

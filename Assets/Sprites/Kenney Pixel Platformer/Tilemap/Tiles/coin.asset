@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: tilemap_151
+  m_Name: coin
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 1846842043, guid: a05a34afdcea4b04a8e026c7d361aa07, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -1,6 +1,6 @@
 # 2D PEC2 - Plataformas 2D
 
-## [Jugar en itch.io](TODO)
+## [Jugar en itch.io](https://freyzerfault.itch.io/supermarpo1)
 
 ## [Video Demo](TODO)
 
