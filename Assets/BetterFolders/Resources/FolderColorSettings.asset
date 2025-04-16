@@ -55,13 +55,13 @@ MonoBehaviour:
     applyIconToSubfolders: 0
     materialColor: 0
   - folderName: Editor
-    folderColor: {r: 0.054901965, g: 0.454902, b: 0.5647059, a: 1}
-    fullPath: 
+    folderColor: {r: 0, g: 0.5882353, b: 0.53333336, a: 1}
+    fullPath: Assets/Scripts/Editor
     icon: {fileID: 2800000, guid: 79f90b3fbb314424dbdf513b120b0f67, type: 3}
     applyToAllFolders: 1
     applyColorToSubfolders: 1
     applyIconToSubfolders: 0
-    materialColor: 0
+    materialColor: 9
   - folderName: Effects
     folderColor: {r: 0.011764707, g: 0.41176474, b: 0.6313726, a: 1}
     fullPath: 
@@ -199,13 +199,13 @@ MonoBehaviour:
     applyIconToSubfolders: 0
     materialColor: 18
   - folderName: Utils
-    folderColor: {r: 1, g: 0.92156863, b: 0.23137255, a: 1}
+    folderColor: {r: 1, g: 0.59607846, b: 0, a: 1}
     fullPath: Assets/Scripts/Utils
-    icon: {fileID: 0}
+    icon: {fileID: 2800000, guid: a155b4e7738ddc44da452dfc92e9738b, type: 3}
     applyToAllFolders: 0
     applyColorToSubfolders: 0
     applyIconToSubfolders: 0
-    materialColor: 13
+    materialColor: 15
   - folderName: URP
     folderColor: {r: 0, g: 0.7372549, b: 0.83137256, a: 1}
     fullPath: Assets/Settings/URP
@@ -214,3 +214,59 @@ MonoBehaviour:
     applyColorToSubfolders: 0
     applyIconToSubfolders: 0
     materialColor: 8
+  - folderName: UI
+    folderColor: {r: 1, g: 0.75686276, b: 0.02745098, a: 1}
+    fullPath: Assets/Scripts/UI
+    icon: {fileID: 2800000, guid: 150eb1b08b21cef4788e1568a2f45127, type: 3}
+    applyToAllFolders: 0
+    applyColorToSubfolders: 0
+    applyIconToSubfolders: 0
+    materialColor: 14
+  - folderName: Objects
+    folderColor: {r: 0.6117647, g: 0.15294118, b: 0.6901961, a: 1}
+    fullPath: Assets/Scripts/Objects
+    icon: {fileID: 2800000, guid: 3d960c6e8b5d2454f9be0242dbf6cde8, type: 3}
+    applyToAllFolders: 0
+    applyColorToSubfolders: 0
+    applyIconToSubfolders: 0
+    materialColor: 3
+  - folderName: Managers
+    folderColor: {r: 0, g: 0.7372549, b: 0.83137256, a: 1}
+    fullPath: Assets/Scripts/Managers
+    icon: {fileID: 2800000, guid: 6aee2bc5a6d68b9469cb951747990de4, type: 3}
+    applyToAllFolders: 0
+    applyColorToSubfolders: 0
+    applyIconToSubfolders: 0
+    materialColor: 8
+  - folderName: Data
+    folderColor: {r: 0.95686275, g: 0.2627451, b: 0.21176471, a: 1}
+    fullPath: Assets/Scripts/Data
+    icon: {fileID: 2800000, guid: 1a9d2b3d51e0f174e91019fc2fdb1102, type: 3}
+    applyToAllFolders: 0
+    applyColorToSubfolders: 0
+    applyIconToSubfolders: 0
+    materialColor: 1
+  - folderName: Debug
+    folderColor: {r: 0.6509433, g: 0.6340218, b: 0.41758618, a: 1}
+    fullPath: Assets/Scripts/Debug
+    icon: {fileID: 2800000, guid: af4e82773f881fe48b7b1455805ae93a, type: 3}
+    applyToAllFolders: 0
+    applyColorToSubfolders: 0
+    applyIconToSubfolders: 0
+    materialColor: 0
+  - folderName: Debugging
+    folderColor: {r: 0.4858489, g: 0.48531458, b: 0.31855184, a: 1}
+    fullPath: Assets/Scripts/Debugging
+    icon: {fileID: 2800000, guid: af4e82773f881fe48b7b1455805ae93a, type: 3}
+    applyToAllFolders: 0
+    applyColorToSubfolders: 0
+    applyIconToSubfolders: 0
+    materialColor: 0
+  - folderName: Enemies
+    folderColor: {r: 0.9137255, g: 0.11764706, b: 0.3882353, a: 1}
+    fullPath: Assets/Scripts/Enemies
+    icon: {fileID: 2800000, guid: d4b01e728a7cc8643b9fa303df86cd86, type: 3}
+    applyToAllFolders: 0
+    applyColorToSubfolders: 0
+    applyIconToSubfolders: 0
+    materialColor: 2

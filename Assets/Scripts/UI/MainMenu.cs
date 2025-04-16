@@ -1,8 +1,12 @@
+using Managers;
 using UnityEngine;
 
-public class MainMenu : MonoBehaviour
+namespace UI
 {
+    public class MainMenu : MonoBehaviour
+    {
     
-    public void StartGame() => GameManager.LoadScene("Game");
-    public void Exit() => GameManager.QuitGame();
+        public void StartGame() => GameManager.LoadScene("Game");
+        public void Exit() => GameManager.QuitGame();
+    }
 }

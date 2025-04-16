@@ -1,4 +1,6 @@
 using System;
+using Data;
+using Managers;
 using TMPro;
 using UnityEngine;
 
@@ -24,34 +26,31 @@ namespace UI
             UpdateCoins();
             UpdateGems();
             
-            ScoreManager.Instance.onCoinCollected += OnCoinCollected;
-            ScoreManager.Instance.onGemCollected += OnGemCollected;
+            DataManager.Instance.OnCollectableAdded += HandleOnCollectableAdded;
         }
-
-        private void OnDestroy()
-        {
-            ScoreManager.Instance.onCoinCollected -= OnCoinCollected;
-            ScoreManager.Instance.onGemCollected -= OnGemCollected;
-        }
+        
+        private void OnDestroy() => DataManager.Instance.OnCollectableAdded -= HandleOnCollectableAdded;
 
         private void Update() => UpdateScore();
-
         
-        private void OnCoinCollected()
+        
+        private void HandleOnCollectableAdded(CollectableType type)
         {
-            UpdateCoins();
+            switch (type)
+            {
+                case CollectableType.Coin:
+                    UpdateCoins();
+                    break;
+                case CollectableType.Gem:
+                    UpdateGems();
+                    break;
+            }
+            
             UpdateScore();
         }
-    
-        private void OnGemCollected()
-        {
-            UpdateGems();
-            UpdateScore();
-        }
-
         
-        private void UpdateScore() => _score.text = ScoreManager.Instance.Score.ToString();
-        private void UpdateCoins() => _coins.text = ScoreManager.Instance.Coins.ToString();
-        private void UpdateGems() => _gems.text = ScoreManager.Instance.Gems.ToString();
+        private void UpdateScore() => _score.text = DataManager.Instance.Score.ToString();
+        private void UpdateCoins() => _coins.text = DataManager.Instance.Coins.ToString();
+        private void UpdateGems() => _gems.text = DataManager.Instance.Gems.ToString();
     }
 }

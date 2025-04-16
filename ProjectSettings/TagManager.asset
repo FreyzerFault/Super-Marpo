@@ -13,16 +13,16 @@ TagManager:
   - Water
   - UI
   - Player
-  - Walkable
+  - 
   - Collectible
   - Enemy
   - Moving Environment
   - Decoration
   - Background
-  - OneWayPlatform
+  - 
   - Ground
-  - 
-  - 
+  - PlayerAura
+  - Platform
   - 
   - 
   - 

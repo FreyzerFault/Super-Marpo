@@ -1,147 +1,188 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Utils;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
+    public static int WalkableLayer => LayerMask.GetMask("Ground", "Platform", "Moving Environment");
+    public static int PlatformLayer => LayerMask.GetMask("Platform");
+    private static bool GamePaused => GameManager.Instance.IsPaused;
+    
+    [Header("Player Movement")]
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float jumpForce = 1f;
     [SerializeField] private Vector2 groundDetectionDistance = new(0.1f, 0.02f);
-    [SerializeField] private float jumpWindow = 0.2f; // Time to jump after pressing the button
-    private float _jumpTimePressed = 0f;
+    [SerializeField] private float jumpTimeWindow = 0.2f; // Time to jump after pressing the button
     
     
     private Rigidbody2D _rb;
-    private Animator _animator;
     private SpriteRenderer _sr;
     
     private float _horizontalInput;
-    private bool _jumpInputBuffered;
+    
+    // Jump Buffer stays active for a short time after pressing the jump button
+    private bool _jumpBufferInput;
+    private float _jumpTimePressed;
+    
     private bool _isOnWalkable;
     private bool _lastFrameInWalkable;
-    
-    private static int WalkableLayer => LayerMask.GetMask("Walkable");
-    private bool IsOnWalkable => BoxCheckDownLayer(WalkableLayer, groundDetectionDistance);
-    private bool IsOnGround
-    {
-        get
-        {
-            RaycastHit2D hit = RayCastDownLayer(WalkableLayer, groundDetectionDistance.y * 2);
-            return hit && hit.collider.CompareTag("Ground");
-        }
-    }
 
-    private RaycastHit2D RayCastDownLayer(int layer, float dist) =>
-        Physics2D.Raycast(transform.position, Vector2.down, dist, layer);
+    public event Action OnJumpPerformed;
+    public event Action OnBounce;
+    public event Action OnLand;
+    public event Action OnFallOff;
     
-    private bool BoxCheckDownLayer(int layer, Vector2 boxSize) =>
-        Physics2D.OverlapBox((Vector2)transform.position + Vector2.down * groundDetectionDistance.y / 2,
-            boxSize, 0, layer);
-
-    private void Awake()
+    
+    protected override void Awake()
     {
+        base.Awake();
         _rb = GetComponentInChildren<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
         _sr = GetComponentInChildren<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
     }
 
     private void Update() => UpdateAnimator();
 
     private void FixedUpdate()
     {
-        if (!GameManager.Instance.IsPlaying) return;
+        if (GamePaused) return;
         
         _isOnWalkable = IsOnWalkable;
         
-        Move();
-        TryJump();
+        UpdateBufferJump(Time.fixedDeltaTime);
+        
+        Move(_horizontalInput, Time.fixedDeltaTime);
+        
+        if (_jumpBufferInput && _isOnWalkable)
+            Jump(jumpForce);
+        
         
         // Fall on Walkable object
         if (_lastFrameInWalkable != _isOnWalkable && _rb.velocity.y < 0.1f)
         {
-            if (_isOnWalkable) OnLand();
-            else OnFallOff();
+            if (_isOnWalkable) OnLand?.Invoke();
+            else OnFallOff?.Invoke();
         }
 
         _lastFrameInWalkable = IsOnWalkable;
     }
 
-    private void Move()
-    {
-        _rb.velocity = new Vector2(_horizontalInput * moveSpeed * Time.fixedDeltaTime, _rb.velocity.y);
-        
-        if (_horizontalInput != 0) _sr.flipX = _horizontalInput > 0;
-    }
     
-    private void TryJump()
-    {
-        if (!_jumpInputBuffered) return;
+    #region MOVEMENT
 
-        // Time Window for Jumping expired => Reset Jump Buffer
-        if (_jumpTimePressed > jumpWindow)
+        #region HORIZONTAL
+
+        /// Apply Horizontal Velocity and flip the sprite
+        public void Move(float horizontalMove, float deltaTime)
         {
-            _jumpInputBuffered = false;
+            _rb.velocity = new Vector2(horizontalMove * moveSpeed * deltaTime, _rb.velocity.y);
+            
+            if (horizontalMove != 0) _sr.flipX = horizontalMove > 0;
+        }
+
+        #endregion
+
+
+        #region JUMP
+
+        /// Apply a Vertical Force to Jump
+        public void Jump(float force)
+        {
+            OnJumpPerformed?.Invoke();
+        
+            // Reset the jump buffer
+            _jumpBufferInput = false;
             _jumpTimePressed = 0;
-            return;
+        
+            _rb.velocity = Vector2.up * force;
         }
         
-        bool isGrounded = IsOnWalkable;
-        
-        // Jump pressed and IsGrounded => Jump and Reset Jump Buffer
-        if (isGrounded)
+        /// If JUMP is pressed, jump with the full force
+        public void Bounce()
         {
-            Jump();
-            _jumpInputBuffered = false;
-            _jumpTimePressed = 0;
-            return;
+            OnBounce?.Invoke();
+            _rb.velocity = Vector2.up * (_jumpBufferInput ? jumpForce : jumpForce * 0.5f);
         }
-        
-        // Timer for Jump Buffer
-        _jumpTimePressed += Time.fixedDeltaTime;
-    }
 
-    private void Jump()
-    {
-        _rb.velocity = Vector2.up * jumpForce;
-        PLayHitGroundParticles();
-        StopWalkingParticles();
-    }
-
-    private void OnLand()
-    {
-        if (IsOnGround)
+        /// The buffer timer increase till the time window is reached, then buffer is reset
+        private void UpdateBufferJump(float deltaTime)
         {
-            StartWalkingParticles();
-            PLayHitGroundParticles();
+            if (!_jumpBufferInput) return;
+
+            // Timer for Jump Buffer
+            _jumpTimePressed += deltaTime;
+        
+            // Time Window for Jumping expired => Reset Jump Buffer
+            if (_jumpTimePressed > jumpTimeWindow)
+            {
+                _jumpBufferInput = false;
+                _jumpTimePressed = 0;
+            }
         }
-    }
+
+        #endregion
+
+
+        #region FALL OFF PLATFORMS
+
+        /// If a platform is under the Player, fall down, disabling its collider for brief a moment
+        private void TryFallFromPlatform()
+        {
+            if (GamePaused) return;
+        
+            RaycastHit2D hit = RayCastDown(PlatformLayer, groundDetectionDistance.y * 5);
+            if (!hit) return;
+            
+            OnFallOff?.Invoke();
+        
+            StartCoroutine(DeactivatePlatform(hit.collider));
+        }
     
-    private void OnFallOff() => StopWalkingParticles();
+        private IEnumerator DeactivatePlatform(Collider2D platformCol, float waitSeconds = 0.15f)
+        {
+            platformCol.isTrigger = true;
+            yield return new WaitForSeconds(waitSeconds);
+            platformCol.isTrigger = false;
+        }
 
+        #endregion
 
-    private void FallFromPlatform()
+    #endregion
+
+    
+    #region DAMAGE
+    
+    public void GetHit(Vector2 hitForce)
     {
-        if (!GameManager.Instance.IsPlaying) return;
-        RaycastHit2D hit = RayCastDownLayer(WalkableLayer, groundDetectionDistance.y * 5);
-        hit.collider.enabled = false;
-        StartCoroutine(DeactivatePlatform(hit.collider));
+        _rb.AddForce(hitForce);
     }
 
-    private IEnumerator DeactivatePlatform(Collider2D platformCol, float waitSeconds = 0.15f)
-    {
-        platformCol.isTrigger = true;
-        yield return new WaitForSeconds(waitSeconds);
-        platformCol.isTrigger = false;
-    }
+    #endregion
+    
+
+    #region CHECKING ENVIRONMENT
+    
+    public bool IsOnWalkable => BoxCheckDown(WalkableLayer, groundDetectionDistance);
+    public bool IsOnGround => RayCastDown(LayerMask.GetMask("Ground"), groundDetectionDistance.y * 2);
+
+    public RaycastHit2D RayCastDown(int layer, float dist) =>
+        Physics2D.Raycast(transform.position, Vector2.down, dist, layer);
+    
+    private bool BoxCheckDown(int layer, Vector2 boxSize) =>
+        Physics2D.OverlapBox((Vector2)transform.position + Vector2.down * groundDetectionDistance.y / 2,
+            boxSize, 0, layer);
+
+    #endregion
 
     
     #region INPUTS
     
     private void OnMove(InputValue value) => _horizontalInput = value.Get<float>();
-    private void OnJump() => _jumpInputBuffered = true;
-    private void OnDown() => FallFromPlatform();
+    private void OnJump() => _jumpBufferInput = true;
+    private void OnDown() => TryFallFromPlatform();
     private void OnPause() => GameManager.Instance.TogglePause();
 
     #endregion
@@ -151,7 +192,9 @@ public class PlayerController : MonoBehaviour
 
     private static readonly int WalkSpeedID = Animator.StringToHash("WalkSpeed");
     private static readonly int IsGroundedID = Animator.StringToHash("IsGrounded");
-    
+        
+    private Animator _animator;
+        
     private void UpdateAnimator()
     {
         _animator.SetFloat(WalkSpeedID, Mathf.Abs(_horizontalInput));
@@ -159,65 +202,8 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
-
     
-    #region PARTICLES
-    
-    #region WALK PARTICLES
-
-    private Vector3 _lastGroundPosition;
-    [SerializeField] private ParticleSystem walkParticles;
-
-    /// Start the walking particles system and parent them to the player again
-    private void StartWalkingParticles()
-    {
-        walkParticles.Play();
-        walkParticles.transform.parent = transform;
-        walkParticles.transform.localPosition = Vector3.zero;
-    }
-
-    /// End the walking particles system and unParent it so they don't follow you in the air
-    private void StopWalkingParticles()
-    {
-        walkParticles.Stop();
-        walkParticles.transform.parent = null;
-    }
-
-    #endregion
-
-    
-    #region LAND & JUMP GROUND PARTICLES
-    
-    [SerializeField] private ParticleSystem groundParticlesPrefab;
-    private List<ParticleSystem> _hitParticlesPool = new();
-    
-    private void PLayHitGroundParticles()
-    {
-        RaycastHit2D hit = RayCastDownLayer(WalkableLayer, groundDetectionDistance.y * 10f);
-        if (hit&& hit.collider.CompareTag($"Ground"))
-            PlayParticlesPooled(groundParticlesPrefab, ref _hitParticlesPool, 
-                hit.point - (Vector2)hit.transform.position,
-                Quaternion.LookRotation(Vector3.forward, hit.normal), hit.transform);
-    }
-
-    /// Busca en el pool de particulas alguna que no este emitiendo y la recicla ejecutandola de nuevo
-    private static void PlayParticlesPooled(ParticleSystem prefab, ref List<ParticleSystem> pool,
-        Vector3 position = default, Quaternion rotation = default, Transform parent = null)
-    {
-        ParticleSystem pooledParticles = pool.FirstOrDefault(p => !p.isEmitting);
-        if (pooledParticles == null)
-            pool.Add(pooledParticles = Instantiate(prefab, parent));
-        
-        pooledParticles.transform.parent = parent;
-        pooledParticles.transform.SetLocalPositionAndRotation(position, rotation);
-        pooledParticles.Play();
-    }
-    
-    #endregion
-    
-    #endregion
-
-    
+   
     #region DEBUG
 
     private void OnDrawGizmos()
@@ -235,11 +221,6 @@ public class PlayerController : MonoBehaviour
         
         Gizmos.color = Color.cyan;
         Gizmos.DrawRay(transform.position + new Vector3(_rb.centerOfMass.x, _rb.centerOfMass.y, 0), _rb.velocity);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("TRIGGER ENTER");
     }
 
     #endregion
