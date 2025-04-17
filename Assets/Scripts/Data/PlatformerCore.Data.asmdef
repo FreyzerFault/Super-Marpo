@@ -1,0 +1,17 @@
+{
+    "name": "PlatformerCore.Data",
+    "rootNamespace": "",
+    "references": [
+        "GUID:1813e3cd24ce00745bcc9b6df904254d",
+        "GUID:d525ad6bd40672747bde77962f1c401e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

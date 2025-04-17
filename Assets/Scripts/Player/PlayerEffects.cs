@@ -19,9 +19,27 @@ namespace Player
             _playerController.OnJumpPerformed += HandleJump;
             _playerController.OnBounce += HandleBounce;
             _playerController.OnLand += HandleLand;
-            _playerController.OnFallOff += HandleFallOff;
         }
-        
+
+        private void Update()
+        {
+            if (_playerController.IsOnGround)
+                StartWalkingParticles();
+            else
+                StopWalkingParticles();
+
+            switch (_playerController.IsInvincible)
+            {
+                case true when !invincibilityParticles.isPlaying:
+                    invincibilityParticles.Play();
+                    break;
+                case false when invincibilityParticles.isPlaying:
+                    invincibilityParticles.Stop();
+                    break;
+            }
+        }
+
+
         private void HandleJump()
         {
             jumpAudio.Play();
@@ -32,14 +50,7 @@ namespace Player
         
         private void HandleBounce() => bounceAudio.Play();
 
-        private void HandleFallOff() => StopWalkingParticles();
-
-        private void HandleLand()
-        {
-            if (_playerController.IsOnGround) 
-                StartWalkingParticles();
-            PLayHitGroundParticles();
-        }
+        private void HandleLand() => PLayHitGroundParticles();
 
 
         #region AUDIO
@@ -85,7 +96,7 @@ namespace Player
             
             private void PLayHitGroundParticles()
             {
-                RaycastHit2D hit = _playerController.RayCastDown(PlayerController.WalkableLayer, 1);
+                RaycastHit2D hit = _playerController.HitGroundUnderneath;
                 if (hit)
                     PlayParticlesPooled(groundParticlesPrefab, ref _hitParticlesPool, 
                         hit.point - (Vector2)hit.transform.position,
@@ -106,6 +117,13 @@ namespace Player
                 pooledParticles.Play();
             }
             
+            #endregion
+
+
+            #region INVINCIBILITY PARTICLES
+
+            [SerializeField] private ParticleSystem invincibilityParticles;
+
             #endregion
         
         #endregion

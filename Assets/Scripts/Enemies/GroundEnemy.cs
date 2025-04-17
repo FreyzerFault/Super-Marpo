@@ -40,15 +40,6 @@ namespace Enemies
                 moveDir = -moveDir;
         }
 
-        // /// If collision is sideways, go to opposite direction
-        // protected override void HandleEnvironmentCollision(Collision2D collision)
-        // {
-        //     bool rightCollision = collision.contacts.Any(c => c.point.x - transform.position.x > 0.01f);
-        //     bool leftCollision = collision.contacts.Any(c => c.point.x - transform.position.x < -0.01f);
-        //     moveDir = rightCollision ? Vector2.left : leftCollision ? Vector2.right : moveDir;
-        // }
-
-
         #endregion
     }
 }

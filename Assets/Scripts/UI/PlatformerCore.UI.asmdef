@@ -1,0 +1,19 @@
+{
+    "name": "PlatformerCore.UI",
+    "rootNamespace": "",
+    "references": [
+        "GUID:825b51494cc2ab94f9b049d9039d70af",
+        "GUID:1813e3cd24ce00745bcc9b6df904254d",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:3260db013b7c3b049986df5125a48ca0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

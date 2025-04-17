@@ -30,14 +30,14 @@ namespace Enemies
                 }
             
             // Collision is NOT in the head
-            HitPlayer();
+            base.HandlePlayerCollision(collision);
         }
         
         
 #if UNITY_EDITOR
         #region DEBUG
-
-        protected void OnDrawGizmos()
+        
+        protected virtual void OnDrawGizmos()
         {
             Handles.color = Color.blue;
             Handles.DrawWireArc(transform.position, Vector3.back, Quaternion.AngleAxis(AngleOfHead / 2, Vector3.forward) * Vector2.up, AngleOfHead, 0.2f);

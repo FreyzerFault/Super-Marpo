@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using Data;
-using Managers;
+using Player;
 using UnityEngine;
 using Debug = Debugging.Debug;
 
@@ -49,7 +49,14 @@ namespace Enemies
                 HandleEnvironmentCollision(collision);
         }
 
-        protected virtual void HandlePlayerCollision(Collision2D collision) => HitPlayer();
+        protected virtual void HandlePlayerCollision(Collision2D collision)
+        {
+            if (Player.IsInvincible)
+                Die();
+            else
+                HitPlayer();
+        }
+
         protected virtual void HandleEnvironmentCollision(Collision2D collision) { }
 
 
@@ -57,7 +64,7 @@ namespace Enemies
 
         public void HitPlayer()
         {
-            Vector2 hitDir = (Player.transform.position - transform.position) * Vector2.right;
+            Vector2 hitDir = ((Player.transform.position - transform.position) * Vector2.right + Vector2.up).normalized;
             Vector2 hitForce = hitDir.normalized * PushForce;
             Player.GetHit(hitForce);
         }

@@ -1,10 +1,9 @@
 using System;
-using Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
 
-namespace Managers
+namespace Data
 {
     public class DataManager : SingletonPersistent<DataManager>
     {
@@ -43,5 +42,16 @@ namespace Managers
             if (scene.name == "Game") 
                 gameData.Reset();
         }
+
+
+        #region GAME TIME
+
+        public float GameTime
+        {
+            get => gameData.GameTime;
+            set => gameData.GameTime = value;
+        }
+
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using Data;
 using Managers;
 using TMPro;
 using UnityEngine;
@@ -22,7 +23,7 @@ namespace UI
         {
             if (!GameManager.Instance.IsPlaying) return;
             
-            TimeSpan ts = TimeSpan.FromSeconds(GameManager.Instance.GameTime);
+            TimeSpan ts = TimeSpan.FromSeconds(DataManager.Instance.GameTime);
             _txt.text = ts.ToString($@"{(ts.Minutes > 0 ? @"mm\:" : "")}ss\:ff").Replace(":", " :");
         }
     }

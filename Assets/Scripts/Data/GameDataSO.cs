@@ -1,6 +1,5 @@
 using System.Linq;
 using AYellowpaper.SerializedCollections;
-using Managers;
 using UnityEngine;
 using static Data.CollectableType;
 using static Data.EnemyType;
@@ -16,6 +15,8 @@ namespace Data
         {
             foreach (CollectableData data in collectables.Values) data.Reset();
             foreach (EnemyData data in enemies.Values) data.Reset();
+            
+            _gameTime = 0;
         }
         
         
@@ -57,9 +58,22 @@ namespace Data
         private int CollectablesScore => collectables.Aggregate(0, (sum, pair) => pair.Value.TotalScore + sum);
         private int EnemiesScore => enemies.Aggregate(0, (sum, pair) => pair.Value.TotalScore + sum);
         
-        private int TimeScoreLost => -Mathf.FloorToInt(GameManager.Instance.GameTime);
+        private int TimeScoreLost => -Mathf.FloorToInt(_gameTime);
         
         public int TotalScore => initialScore + CollectablesScore + EnemiesScore + TimeScoreLost;
+
+        #endregion
+
+        
+        #region GAMETIME
+
+        private float _gameTime;
+
+        public float GameTime
+        {
+            get => _gameTime;
+            set => _gameTime = value;
+        }
 
         #endregion
     }

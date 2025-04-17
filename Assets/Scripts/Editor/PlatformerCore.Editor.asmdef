@@ -1,0 +1,19 @@
+{
+    "name": "PlatformerCore.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:1813e3cd24ce00745bcc9b6df904254d",
+        "GUID:94940373f0720764ebdbcbc41a2407b4"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using Data;
-using Managers;
 using UnityEngine;
 
 namespace Objects
@@ -18,7 +16,7 @@ namespace Objects
         {
             _animator = GetComponent<Animator>();
             _audio = GetComponent<AudioSource>();
-            _particleSystem = GetComponent<ParticleSystem>();
+            _particleSystem = GetComponentInChildren<ParticleSystem>();
             _collider = GetComponent<Collider2D>();
         }
         

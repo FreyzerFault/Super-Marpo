@@ -1,4 +1,5 @@
 using System;
+using Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
@@ -76,11 +77,8 @@ namespace Managers
 
 
 		#region GAME TIME
-	
-		private float _gameTime;
-		public float GameTime => _gameTime;
 
-		private void UpdateTime() => _gameTime += Time.deltaTime;
+		private void UpdateTime() => DataManager.Instance.GameTime += Time.deltaTime;
 
 		#endregion
 

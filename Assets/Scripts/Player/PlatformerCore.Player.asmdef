@@ -1,0 +1,19 @@
+{
+    "name": "PlatformerCore.Player",
+    "rootNamespace": "",
+    "references": [
+        "GUID:1813e3cd24ce00745bcc9b6df904254d",
+        "GUID:825b51494cc2ab94f9b049d9039d70af",
+        "GUID:4307f53044263cf4b835bd812fc161a4",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
