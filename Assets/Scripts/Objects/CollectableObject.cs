@@ -22,8 +22,17 @@ namespace Objects
         
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Collect();
-            _collider.enabled = false;
+            if (other.CompareTag("Player") || other.transform.parent.CompareTag("Player"))
+            {
+                Collect();
+                DisableAllColliders();
+            }
+        }
+
+        private void DisableAllColliders()
+        {
+            foreach (Collider2D col in GetComponentsInChildren<Collider2D>()) 
+                col.enabled = false;
         }
 
 

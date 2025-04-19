@@ -19,11 +19,7 @@ namespace Objects
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag("Player"))
-            {
-                Debug.Log("Player Entered");
-                Fade();
-            }
+            if (other.CompareTag("Player")) Fade();
         }
 
         private void Fade() => _renderer.material.DOFade(0.1f, fadeDuration);

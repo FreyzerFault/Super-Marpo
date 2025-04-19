@@ -5,7 +5,7 @@ namespace Data
 {
     public abstract class EntityData<T>: IEquatable<EntityData<T>> where T : Enum
     {
-        public readonly T type;
+        public T type;
 
         protected EntityData(T type) => this.type = type;
 

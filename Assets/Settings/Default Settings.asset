@@ -17,7 +17,7 @@ MonoBehaviour:
     type: 3
     valueInt: 0
     valueFloat: 0
-    valueBool: 1
+    valueBool: 0
     valueString: 
     valueColor: {r: 0, g: 0, b: 0, a: 0}
   - name: VSync

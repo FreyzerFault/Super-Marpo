@@ -1,11 +1,13 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Data
 {
+    [Serializable]
     public class ScorableData<T>: EntityData<T> where T : Enum
     {
-        protected readonly int score;
-        protected int count;
+        [SerializeField] protected int score;
+        [SerializeField] protected int count;
         
         public int TotalScore => score * count;
 

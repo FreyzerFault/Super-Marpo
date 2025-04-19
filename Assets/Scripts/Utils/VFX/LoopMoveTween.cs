@@ -6,7 +6,7 @@ using DG.Tweening.Plugins.Options;
 using UnityEditor;
 using UnityEngine;
 
-namespace Utils
+namespace Utils.VFX
 {
     [Serializable]
     public class LoopMoveTween
@@ -14,8 +14,9 @@ namespace Utils
         [SerializeField] public Transform movingObj;
         [SerializeField] public Transform startPoint;
         [SerializeField] public Transform endPoint;
-        
+
         [Header("Animation")]
+        [SerializeField] private bool startActive = true;
         [Min(0f)] public float durantionSeconds = 2f;
         [Min(0f)] public float delaySeconds = 1f;
         [SerializeField] private bool startReversed;
@@ -43,7 +44,7 @@ namespace Utils
                 .AppendInterval(delaySeconds)
                 .SetLoops(-1, LoopType.Yoyo);
 
-            if (!_sequence.IsActive()) 
+            if (!startActive) 
                 _sequence.Pause();
         }
         
@@ -52,8 +53,9 @@ namespace Utils
 
 
         public void Destroy() => _sequence.Kill();
-        
-        
+
+
+#if UNITY_EDITOR
         #region DEBUG
 
         public void OnDrawGizmos()
@@ -93,5 +95,6 @@ namespace Utils
         }
 
         #endregion
+#endif
     }
 }

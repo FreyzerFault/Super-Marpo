@@ -2,6 +2,7 @@ using System;
 using Player;
 using UnityEngine;
 using Utils;
+using Utils.VFX;
 
 namespace Objects
 {
@@ -26,9 +27,10 @@ namespace Objects
         private void Start()
         {
             _sr = GetComponentInChildren<SpriteRenderer>();
-            UpdateSprite();
             
             loopMoveTween.Initialize();
+            
+            UpdateSprite();
         }
 
         private void OnDestroy() => loopMoveTween.Destroy();
@@ -80,11 +82,13 @@ namespace Objects
 
         #endregion
 
-        
+
+#if UNITY_EDITOR
         #region DEBUG
 
         private void OnDrawGizmos() => loopMoveTween.OnDrawGizmos();
 
-        #endregion
+        #endregion  
+#endif
     }
 }

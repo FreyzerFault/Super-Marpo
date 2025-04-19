@@ -1,19 +1,9 @@
-using System;
 using Managers;
-using UnityEngine;
 
 namespace UI
 {
-    public class PauseMenu : MonoBehaviour
+    public class PauseMenu : PopUpMenu
     {
-        private GameObject _menu;
-
-        private void Awake()
-        {
-            _menu = transform.GetChild(0).gameObject;
-            Hide();
-        }
-
         private void Start() => GameManager.Instance.onGameStateChanged += OnGameStateChanged;
         private void OnDestroy() => GameManager.Instance.onGameStateChanged -= OnGameStateChanged;
 
@@ -32,10 +22,6 @@ namespace UI
                     break;
             }
         }
-
-        public void Toggle() => _menu.SetActive(!gameObject.activeSelf);
-        public void Show() => _menu.SetActive(true);
-        public void Hide() => _menu.SetActive(false);
     
         public void Restart() => GameManager.ReloadScene();
         public void Exit() => GameManager.LoadScene("MainMenu");

@@ -1,6 +1,7 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Managers;
 using UnityEngine;
 
 namespace Player
@@ -8,10 +9,14 @@ namespace Player
     public class PlayerEffects: MonoBehaviour
     {
         private PlayerController _playerController;
+        private Animator _animator;
+        private SpriteRenderer _sr;
 
         private void Awake()
         {
             _playerController = GetComponent<PlayerController>();
+            _animator = GetComponent<Animator>();
+            _sr = GetComponentInChildren<SpriteRenderer>();
         }
         
         private void Start()
@@ -19,11 +24,14 @@ namespace Player
             _playerController.OnJumpPerformed += HandleJump;
             _playerController.OnBounce += HandleBounce;
             _playerController.OnLand += HandleLand;
+            _playerController.OnDamage += HandleDamage;
+            _playerController.OnDeath += HandleDeath;
         }
+
 
         private void Update()
         {
-            if (_playerController.IsOnGround)
+            if (_playerController.IsRunning && _playerController.IsOnGround)
                 StartWalkingParticles();
             else
                 StopWalkingParticles();
@@ -52,16 +60,44 @@ namespace Player
 
         private void HandleLand() => PLayHitGroundParticles();
 
+        private void HandleDamage()
+        {
+            hitAudio.Play();
+            
+            StartCoroutine(FlickerSpriteInvulnerabilityCoroutine());
+        }
+
+        private void HandleDeath() => AudioManager.Instance.PlayMusic(deathMusic);
+        
+
+        #region VFX
+        
+        [SerializeField] private float flickerTickDuration = 0.5f;
+        
+        private IEnumerator FlickerSpriteInvulnerabilityCoroutine()
+        {
+            while (_playerController.IsInvulnerable)
+            {
+                _sr.color = new Color(1, 1, 1, 0.5f);
+                yield return new WaitForSeconds(flickerTickDuration * 0.5f);
+                _sr.color = new Color(1, 1, 1, 1);
+                yield return new WaitForSeconds(flickerTickDuration * 0.5f);
+            }
+        }
+
+        #endregion
+        
 
         #region AUDIO
 
         [SerializeField] private AudioSource jumpAudio;
         [SerializeField] private AudioSource bounceAudio;
+        [SerializeField] private AudioSource hitAudio;
+        
+        [SerializeField] private AudioClip deathMusic;
 
         #endregion
-
         
-
         
         #region PARTICLES
         
@@ -74,15 +110,28 @@ namespace Player
             /// Start the walking particles system and parent them to the player again
             private void StartWalkingParticles()
             {
-                walkParticles.Play();
+                // Parent back to the player
                 walkParticles.transform.parent = transform;
                 walkParticles.transform.localPosition = Vector3.zero;
+
+                StartCoroutine(RestartEmissionAfterAFrameCoroutine());
+            }
+
+            private IEnumerator RestartEmissionAfterAFrameCoroutine()
+            {
+                // Wait a frame to avoid the particles from being emitted in the wrong position
+                yield return null;
+                
+                ParticleSystem.EmissionModule emission = walkParticles.emission;
+                emission.enabled = true;
             }
 
             /// End the walking particles system and unParent it so they don't follow you in the air
             private void StopWalkingParticles()
             {
-                walkParticles.Stop();
+                // Unparent the particles from the player to the position they are in so they stay on place
+                ParticleSystem.EmissionModule emission = walkParticles.emission;
+                emission.enabled = false;
                 walkParticles.transform.parent = null;
             }
 
@@ -126,6 +175,17 @@ namespace Player
 
             #endregion
         
+        #endregion
+
+
+        #region ANIMATIONS
+        
+        private static readonly int MusicBounceID = Animator.StringToHash("MusicBounce");
+
+        public void ToggleBounceAnimation(bool on) => _animator.SetBool(MusicBounceID, on);
+        public void StopBounceAnimation() => ToggleBounceAnimation(false);
+        public void PlayBounceAnimation() => ToggleBounceAnimation(true);
+
         #endregion
     }
 }

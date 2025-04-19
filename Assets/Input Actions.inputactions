@@ -33,6 +33,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Run",
+                    "type": "Value",
+                    "id": "4442f0f2-d913-40cd-8a0f-16b901e27796",
+                    "expectedControlType": "Analog",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Pause",
                     "type": "Button",
                     "id": "dce958c0-8a4b-4285-9654-3e47fd0dde44",
@@ -221,6 +230,17 @@
                 },
                 {
                     "name": "",
+                    "id": "2f0d021b-6f30-4800-96c0-45b8e1657069",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "01c65476-f191-4741-8075-620598f7f9ce",
                     "path": "<Gamepad>/start",
                     "interactions": "",
@@ -293,6 +313,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e0f947e4-1d41-463a-aa07-54377f9764f2",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "68187da3-6ba6-47e6-a005-5408104b39b7",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7dc36975-9f2f-4197-a532-349698170d6b",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5b779541-1503-4538-ba42-1ee755155acb",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

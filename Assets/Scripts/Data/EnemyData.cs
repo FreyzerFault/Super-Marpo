@@ -12,7 +12,7 @@ namespace Data
         
         public float speed = 1f;
         public float damage = 1f;
-        public float pushForce = 5f;
+        public float knockback = 5f;
         
         public void RegisterKill() => Add();
 

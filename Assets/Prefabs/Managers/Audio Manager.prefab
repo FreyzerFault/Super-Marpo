@@ -52,6 +52,7 @@ MonoBehaviour:
     type: 2}
   sfxMixerGroup: {fileID: 1398713131397919289, guid: f5f0a3f2a83da6a41acb0fca17b35b03,
     type: 2}
+  audioData: {fileID: 11400000, guid: f081c881043a89047b98d3bb5a8ef1d8, type: 2}
 --- !u!1 &4296816607643384220
 GameObject:
   m_ObjectHideFlags: 0

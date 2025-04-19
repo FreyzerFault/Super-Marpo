@@ -2,6 +2,7 @@
 using Data;
 using UnityEngine;
 using Utils;
+using Utils.VFX;
 
 namespace Enemies
 {

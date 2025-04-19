@@ -15,7 +15,7 @@ namespace Enemies
         private EnemyData Data => DataManager.Instance.GetEnemyData(type);
         protected float Speed => Data.speed;
         protected float Damage => Data.damage;
-        protected float PushForce => Data.pushForce;
+        protected float Knockback => Data.knockback;
         
         protected Vector2 moveDir = Vector2.left;
         protected bool canMove = false;
@@ -64,9 +64,8 @@ namespace Enemies
 
         public void HitPlayer()
         {
-            Vector2 hitDir = ((Player.transform.position - transform.position) * Vector2.right + Vector2.up).normalized;
-            Vector2 hitForce = hitDir.normalized * PushForce;
-            Player.GetHit(hitForce);
+            Vector2 hitDir = ((Player.transform.position - transform.position) * Vector2.right).normalized * Knockback;
+            Player.GetHit(hitDir, Knockback);
         }
         
         public void Die()

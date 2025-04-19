@@ -2,7 +2,7 @@
 
 ## [Jugar en itch.io](https://freyzerfault.itch.io/supermarpo1)
 
-## [Video Demo](TODO)
+## [Video Demo](https://youtu.be/_b4n_sy7Xus)
 
 ---
 
@@ -13,7 +13,7 @@
 > en la Universitat Oberta de Catalunya
 
 <p align="center">
-  <img src="Docs/TODO.gif" alt="Project Logo">
+  <img src="Docs/Super Marpo 1 Gameplay.gif" alt="Project Logo">
 </p>
 
 ---
@@ -22,16 +22,34 @@
 
 Es una copia del primer nivel del original Super Mario Bros de NES
 
-Reinterpretado con una temática `TODO`
+Reinterpretado con una temática en un planeta con bosque, usando los árboles y nubes como plataformas.  
+Tu personaje es un alien y los enemigos son la fauna local.
+
+<p align="center">
+  <img src="Screenshots/Main Menu.png" alt="Monkey Island" width="500">
+</p>
 
 ---
 
 ## Gameplay
 
-`TODO`
+El objetivo es llegar a la bandera al final de la fase.
+
+Como power up único tienes una estrella, escondida en algunos bloques, que te otorga vulnerabilidad durante 10 segundos.  
+Te permite matar a los enemigos al tocarlos y no recibir daño (la estrella clásica de Mario).  
+Adicionalmente, si recibes 1 golpe tras acabarse el efecto de la estrella no morirás.
+
+Puedes recolectar monedas (100 puntos), y 4 diamantes escondidos (2000 puntos).
+
+Los enemigos se pueden matar al saltar sobre ellos como en los juegos de Mario.  
+Durante la invulnerabilidad de la estrella morirán al tocarlos sin más.
+
+Morirás si caes del mapa.
+
+❕ Ciertos abismos no son del todo mortales.
 
 <p align="center">
-  <img src="Docs/TODO.png" alt="Monkey Island" width="500">
+  <img src="Screenshots/Gameplay start.jpg" alt="Monkey Island" width="500">
 </p>
 
 ---
@@ -44,52 +62,74 @@ Reinterpretado con una temática `TODO`
 
 ## Controles
 
-`TODO`
+|                    | Keyboard          | XBOX Controller               |
+| ------------------ | ----------------- | ----------------------------- |
+| Move               | A-S / Left-Right  | Left Stick / D-Pad Left-Right |
+| Jump               | W / Up / Space    | A / D-Pad Up                  |
+| Drop from Platform | S / Down          | Left Stick / D-Pad Down       |
+| Run                | Hold Shift / Ctrl | X / B                         |
+| Pause Game         | Escape / Intro    | Start                         |
 
 ---
 
-## Recursos
-
-### Personajes
-
-`TODO`
-
----
+## Assets
 
 ### Sprites
 
 - **KENNEY** - LICENSE [Creative Commons CC0](https://creativecommons.org/publicdomain/zero/1.0/)
-  > [Pixel Platformer](https://kenney.nl/assets/pixel-platformer)
+
+  > [Pixel Platformer](https://kenney.nl/assets/pixel-platformer) Personajes, Escenario y Fondo
   >
   > <p align="center">
   >   <img src="Assets/Sprites/Kenney Pixel Platformer/Preview.png" alt="Background" width="250">
   >   <img src="Assets/Sprites/Kenney Pixel Platformer/SampleA.png" alt="Background" width="250">
   >   <img src="Assets/Sprites/Kenney Pixel Platformer/SampleB.png" alt="Background" width="250">
   > </p>
-  >
 
   > [Game Icons](https://kenney.nl/assets/game-icons)
   >
   > <p align="center">
   >   <img src="Assets/Sprites/Kenney Game Icons/preview.png" alt="Background" width="500">
   > </p>
-  >
 
 ### UI
+
 - **KENNEY** - LICENSE [Creative Commons CC0](https://creativecommons.org/publicdomain/zero/1.0/)
   > [UI Pack - Pixel Adventure](https://kenney.nl/assets/ui-pack-pixel-adventure)
   >
   > <p align="center">
   >   <img src="Assets/Sprites/Kenney UI Pack Pixel Adventure/preview.png" alt="Background" width="500">
   > </p>
-  >
-  
+
 ### Audio
 
 - **[Incompetech - Royalty Free Music](https://incompetech.com/music/royalty-free/music.html)**
 
-  > Game Music:
   > "Doobly Doo" Kevin MacLeod (incompetech.com)
+  > Licensed under Creative Commons: By Attribution 4.0 License
+  > http://creativecommons.org/licenses/by/4.0/
+
+  > "Newer Wave" Kevin MacLeod (incompetech.com)
+  > Licensed under Creative Commons: By Attribution 4.0 License
+  > http://creativecommons.org/licenses/by/4.0/
+
+  > "Nowhere Land" Kevin MacLeod (incompetech.com)
+  > Licensed under Creative Commons: By Attribution 4.0 License
+  > http://creativecommons.org/licenses/by/4.0/
+
+  > "Blip Stream" Kevin MacLeod (incompetech.com)
+  > Licensed under Creative Commons: By Attribution 4.0 License
+  > http://creativecommons.org/licenses/by/4.0/
+
+  > "Super Friendly" Kevin MacLeod (incompetech.com)
+  > Licensed under Creative Commons: By Attribution 4.0 License
+  > http://creativecommons.org/licenses/by/4.0/
+
+  > "Cipher" Kevin MacLeod (incompetech.com)
+  > Licensed under Creative Commons: By Attribution 4.0 License
+  > http://creativecommons.org/licenses/by/4.0/
+
+  > "Ambler" Kevin MacLeod (incompetech.com)
   > Licensed under Creative Commons: By Attribution 4.0 License
   > http://creativecommons.org/licenses/by/4.0/
 
@@ -97,6 +137,8 @@ Reinterpretado con una temática `TODO`
 
 - **SFX**
   > [KENNEY Interface Sounds](https://kenney.nl/assets/interface-sounds) - LICENSE [Creative Commons CC0](https://creativecommons.org/publicdomain/zero/1.0/)
+
+---
 
 ### Fonts
 
@@ -110,6 +152,5 @@ Reinterpretado con una temática `TODO`
 - **Rider 2023.3.2**
 - **Github Desktop**
 - **Photoshop**
-- [**Excalidraw**](https://app.excalidraw.com)
 
 ---

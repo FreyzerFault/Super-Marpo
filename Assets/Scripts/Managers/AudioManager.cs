@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using AYellowpaper.SerializedCollections;
+using Data;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using Utils;
 
 namespace Managers
@@ -13,7 +17,7 @@ namespace Managers
         public Transform musicParent;
         public Transform sfxParent;
     
-        public AudioMixerGroup musicMixerGroup;
+        public AudioMixerGroup musicMixerGroup; 
         public AudioMixerGroup sfxMixerGroup;
     
         private List<AudioSource> _musicSources;
@@ -29,15 +33,25 @@ namespace Managers
             _ => null
         };
 
-        protected override void Awake()
+        private void Start()
         {
-            base.Awake();
-        
             _musicSources = musicParent.GetComponentsInChildren<AudioSource>().ToList();
             _sfxSources = sfxParent.GetComponentsInChildren<AudioSource>().ToList();
         
             musicMixerGroup ??= _musicSources.First()?.outputAudioMixerGroup;
             sfxMixerGroup ??= _sfxSources.First()?.outputAudioMixerGroup;
+
+            PlayCurrentSceneMusic();
+            _playingMusic = _musicSources.FirstOrDefault();
+            
+            SceneManager.sceneUnloaded += HandleSceneUnloaded;
+            SceneManager.sceneLoaded += HandleSceneLoaded;
+        }
+
+        private void OnDestroy()
+        {
+            SceneManager.sceneUnloaded -= HandleSceneUnloaded;
+            SceneManager.sceneLoaded -= HandleSceneLoaded;
         }
 
 
@@ -73,7 +87,7 @@ namespace Managers
             if (IsPlayingMusic)
                 StopMusic();
         
-            Play(clip, AudioType.Music, volume, pitch);
+            _playingMusic = Play(clip, AudioType.Music, volume, pitch);
         }
 
         public void PlayMusic(int index) => PlayMusic(_musicSources[index]);
@@ -166,6 +180,8 @@ namespace Managers
 
         private AudioSource Play(AudioClip clip, AudioType type = AudioType.Sfx, float volume = 1f, float pitch = 1f)
         {
+            if (clip == null) return null;
+            
             // Search for the Clip in Sources
             AudioSource source = SourceListByType(type).FirstOrDefault(source => source.clip == clip);
         
@@ -182,8 +198,35 @@ namespace Managers
             source.volume = volume;
             source.pitch = pitch;
             source.Play();
+            
             return source;
         }
+
+        #endregion
+
+
+        #region SCENE MUSIC INITIAL SELECTION
+
+        [SerializeField] private AudioDataSO audioData;
+        
+        private void PlayCurrentSceneMusic()
+        {
+            if (audioData == null) return;
+        
+            AudioClip clip = audioData.GetMusicByScene(SceneManager.GetActiveScene());
+            if (clip != null)
+                PlayMusic(clip);
+        }
+        
+        private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (audioData == null) return;
+            
+            StopMusic();
+            PlayMusic(audioData.GetMusicByScene(scene));
+        }
+        
+        private void HandleSceneUnloaded(Scene scene) => StopMusic();
 
         #endregion
     }

@@ -4,19 +4,23 @@ using Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utils;
+using DG.Tweening;
 
 namespace Player
 {
     public class PlayerController : Singleton<PlayerController>
     {
         public static int WalkableLayer => LayerMask.GetMask("Ground", "Platform", "Moving Environment");
+        public static int GroundLayer => LayerMask.GetMask("Ground");
         public static int PlatformLayer => LayerMask.GetMask("Platform");
         private static bool GamePaused => GameManager.Instance.IsPaused;
 
         [SerializeField] private GameObject colliders;
     
         [Header("Player Movement")]
+        public bool activeInput = true;
         [SerializeField] private float moveSpeed = 1f;
+        [SerializeField] private float runMultiplier = 2f;
         [SerializeField] private float jumpForce = 1f;
         [SerializeField] private Vector2 groundDetectionBox = new(0.1f, 0.02f);
         [SerializeField] private float jumpTimeWindow = 0.2f; // Time to jump after pressing the button
@@ -41,10 +45,12 @@ namespace Player
         public bool HasShield { get; private set; }
         public bool IsInvulnerable { get; private set; }
         public bool IsInvincible { get; private set; }
+        public bool IsRunning { get; private set; }
 
         public event Action OnJumpPerformed;
         public event Action OnBounce;
         public event Action OnLand;
+        public event Action OnDamage;
         public event Action OnDeath;
     
         protected override void Awake()
@@ -53,6 +59,8 @@ namespace Player
             _rb = GetComponentInChildren<Rigidbody2D>();
             _sr = GetComponentInChildren<SpriteRenderer>();
             _animator = GetComponent<Animator>();
+            
+            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), false);
         }
 
         private void Update() => UpdateAnimator();
@@ -63,13 +71,16 @@ namespace Player
         
             _isOnWalkable = IsOnWalkable;
         
-            UpdateBufferJump(Time.fixedDeltaTime);
-        
-            Move(_horizontalInput, Time.fixedDeltaTime);
-        
-            if (_jumpBufferInput && _isOnWalkable)
-                Jump(jumpForce);
+            if (activeInput)
+            {
+                UpdateBufferJump(Time.fixedDeltaTime);
 
+                Move(_horizontalInput * (IsRunning ? runMultiplier : 1f), Time.fixedDeltaTime);
+
+                if (_jumpBufferInput && _isOnWalkable)
+                    Jump(jumpForce);
+            }
+            
             _lastFrameInWalkable = IsOnWalkable;
         }
 
@@ -81,7 +92,7 @@ namespace Player
 
 
         #region MOVEMENT
-
+        
         #region HORIZONTAL
 
         /// Apply Horizontal Velocity and flip the sprite
@@ -140,7 +151,7 @@ namespace Player
         /// If a platform is under the Player, fall down, disabling its collider for brief a moment
         private void TryFallFromPlatform()
         {
-            if (GamePaused) return;
+            if (GamePaused || !activeInput) return;
         
             RaycastHit2D hit = RayCastDown(PlatformLayer, groundDetectionBox.y * 5);
             if (!hit) return;
@@ -196,50 +207,53 @@ namespace Player
     
         #region DAMAGE
     
-        public void GetHit(Vector2 hitForce)
+        public void GetHit(Vector2 dir, float force)
         {
             if (IsInvulnerable || IsInvincible) return;
         
-            if (HasShield)
-            {
-                HasShield = false;
+            // Do a little Jump in the opposite direction of the hit
+            transform.DOLocalJump((Vector2)transform.position + dir, force, 1, 0.5f);
+            StartCoroutine(InvulnerableFrames(hitDelaySeconds));
+            
+            OnDamage?.Invoke();
 
-                StartCoroutine(InvulnerableFrames(hitDelaySeconds));
-                _rb.AddForce(hitForce);
-            }
+            if (HasShield)
+                HasShield = false;
             else
-            {
                 Die();
-            }
         }
 
-        private void Die()
+        public void Die(bool fallAnimation = true)
         {
             _animator.SetTrigger(DieID);
-            colliders.SetActive(false);
+            
+            // Deactivate Collision with Enemies
+            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"));
+            
+            // Leave Z Rotations free to feel dead 
+            _rb.constraints = RigidbodyConstraints2D.None;
+            _rb.velocity = Vector2.zero;
+            
+            // Do a Rotation to simulate a fall
+            if (fallAnimation)
+                transform.DOLocalRotate(new Vector3(0, 0, 50), 0.5f);
+            
+            // Disable Inputs
+            activeInput = false;
+            
+            // Stop the music
+            AudioManager.Instance.StopMusic();
+            
             OnDeath?.Invoke();
-            enabled = false;
         }
 
         private IEnumerator InvulnerableFrames(float seconds)
         {
             _sr.color = new Color(1,1,1,0.5f);
             IsInvulnerable = true;
-            StartCoroutine(nameof(FlickerSprite));
             yield return new WaitForSeconds(seconds);
             IsInvulnerable = false;
             _sr.color = Color.white;
-        }
-
-        private IEnumerator FlickerSprite(float flickerTimeTime = 0.2f)
-        {
-            while (IsInvulnerable)
-            {
-                _sr.color = new Color(1, 1, 1, 0.5f);
-                yield return new WaitForSeconds(flickerTimeTime / 2);
-                _sr.color = new Color(1, 1, 1, 1);
-                yield return new WaitForSeconds(flickerTimeTime / 2);
-            }
         }
 
         #endregion
@@ -248,7 +262,7 @@ namespace Player
         #region CHECKING ENVIRONMENT
     
         public bool IsOnWalkable => BoxCheckDown(WalkableLayer, groundDetectionBox);
-        public bool IsOnGround =>  BoxCheckDown(LayerMask.GetMask("Ground"), groundDetectionBox + Vector2.down * groundDetectionBox.y * 2);
+        public bool IsOnGround =>  BoxCheckDown(GroundLayer, groundDetectionBox);
 
         public RaycastHit2D RayCastDown(int layer, float dist) =>
             Physics2D.Raycast(transform.position, Vector2.down, dist, layer);
@@ -265,10 +279,11 @@ namespace Player
 
     
         #region INPUTS
-    
+        
         private void OnMove(InputValue value) => _horizontalInput = value.Get<float>();
         private void OnJump() => _jumpBufferInput = true;
         private void OnDown() => TryFallFromPlatform();
+        private void OnRun(InputValue value) => IsRunning = value.Get<float>() > 0.05f;
         private void OnPause() => GameManager.Instance.TogglePause();
 
         #endregion
@@ -284,7 +299,7 @@ namespace Player
         
         private void UpdateAnimator()
         {
-            _animator.SetFloat(WalkSpeedID, Mathf.Abs(_horizontalInput));
+            _animator.SetFloat(WalkSpeedID, Mathf.Clamp01(Mathf.Abs(_rb.velocity.x)));
             _animator.SetBool(IsGroundedID, IsOnWalkable);
         }
 

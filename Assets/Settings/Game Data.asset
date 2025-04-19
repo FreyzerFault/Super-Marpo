@@ -16,16 +16,30 @@ MonoBehaviour:
   collectables:
     _serializedList:
     - Key: 0
+      Value:
+        type: 0
+        score: 100
+        count: 0
     - Key: 1
+      Value:
+        type: 1
+        score: 2000
+        count: 0
   enemies:
     _serializedList:
     - Key: 0
       Value:
+        type: 0
+        score: 500
+        count: 0
         speed: 20
         damage: 1
-        pushForce: 10
+        knockback: 0.3
     - Key: 1
       Value:
+        type: 1
+        score: 800
+        count: 0
         speed: 20
         damage: 1
-        pushForce: 10
+        knockback: 0.3

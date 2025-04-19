@@ -57,16 +57,14 @@ namespace Managers
 			switch (newState)
 			{
 				case GameState.MainMenu:
-					// TODO
 					break;
 				case GameState.GameOver:
-					// TODO
 					break;
 				case GameState.Playing:
-					// TODO
 					break;
 				case GameState.Paused:
-					// TODO
+					break;
+				case GameState.GoalReached:
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
