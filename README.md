@@ -103,6 +103,8 @@ Morirás si caes del mapa.
 
 ### Audio
 
+#### Music
+
 - **[Incompetech - Royalty Free Music](https://incompetech.com/music/royalty-free/music.html)**
 
   > "Doobly Doo" Kevin MacLeod (incompetech.com)
@@ -135,8 +137,9 @@ Morirás si caes del mapa.
 
 ---
 
-- **SFX**
-  > [KENNEY Interface Sounds](https://kenney.nl/assets/interface-sounds) - LICENSE [Creative Commons CC0](https://creativecommons.org/publicdomain/zero/1.0/)
+#### SFX
+
+> [KENNEY Interface Sounds](https://kenney.nl/assets/interface-sounds) - LICENSE [Creative Commons CC0](https://creativecommons.org/publicdomain/zero/1.0/)
 
 ---
 
