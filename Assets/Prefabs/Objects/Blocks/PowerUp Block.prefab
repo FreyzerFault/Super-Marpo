@@ -152,6 +152,12 @@ PrefabInstance:
       propertyPath: type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9087782177657791239, guid: 794a62c4d419b5f469feb3c6927e78d8,
+        type: 3}
+      propertyPath: powerUp
+      value: 
+      objectReference: {fileID: 2721664988564162629, guid: 84c2e1559adaf45439027cb2c85c7658,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
