@@ -28,10 +28,10 @@
 > en la Universitat Oberta de Catalunya
 
 ## **Contenido:**
-1. [Descripción](#descripción)
+1. [Descripción](#description)
 2. [Gameplay](#gameplay)
-3. [Diseño](#diseño)
-4. [Controles](#controles)
+3. [Diseño](#design)
+4. [Controles](#controls)
 5. [Assets](#assets)
 
 <p align="center">
@@ -40,6 +40,7 @@
 
 ---
 
+<a id="description"></a>
 ## Descripción
 
 Es una copia del primer nivel del original Super Mario Bros de NES
@@ -53,6 +54,7 @@ Tu personaje es un alien y los enemigos son la fauna local.
 
 ---
 
+<a id="gameplay"></a>
 ## Gameplay
 
 El objetivo es llegar a la bandera al final de la fase.
@@ -76,6 +78,7 @@ Morirás si caes del mapa.
 
 ---
 
+<a id="design"></a>
 ## Diseño
 
 ### Game Manager
@@ -312,6 +315,7 @@ Las monedas son variantes de la misma moneda, pero con físicas.
 
 ---
 
+<a id="controls"></a>
 ## Controles
 
 | <br>                   | Teclado                 | Mando (XBOX)             |
@@ -324,6 +328,7 @@ Las monedas son variantes de la misma moneda, pero con físicas.
 
 ---
 
+<a id="assets"></a>
 ## Assets
 
 ### Sprites
