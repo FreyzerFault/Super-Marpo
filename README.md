@@ -28,11 +28,11 @@
 > en la Universitat Oberta de Catalunya
 
 ## **Contenido:**
-1. [Descripción](#Descripción)
-2. [Gameplay](#Gameplay)
-3. [Diseño](#Diseño)
-4. [Controles](#Controles)
-5. [Assets](#Assets)
+1. [Descripción](#descripción)
+2. [Gameplay](#gameplay)
+3. [Diseño](#diseño)
+4. [Controles](#controles)
+5. [Assets](#assets)
 
 <p align="center">
   <img src="Docs/Super Marpo 1 Gameplay.gif" alt="Project Logo">
