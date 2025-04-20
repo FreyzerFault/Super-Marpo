@@ -3,7 +3,7 @@
 ---
 
 <a style="display:flex; gap:20px; color:#fa5c5c; align-item:middle;" href="https://freyzerfault.itch.io/supermarpo1">
-  <img src="Docs/itchio.png" alt="Project Logo" width="60">
+  <img src="Docs/itchio.png" alt="Project Logo" width="32" height="32">
   <span style="font-size: 2rem; vertical-align: middle;">
     Jugar en itch.io
   </span>
@@ -12,7 +12,7 @@
 ---
 
 <a style="display:flex; gap:20px; color:#fa5c5c; align-item:middle;" href="https://youtu.be/_b4n_sy7Xus">
-  <img src="Docs/yt icon.png" alt="Project Logo" width="60">
+  <img src="Docs/yt icon.png" alt="Project Logo" width="32" height="32">
   <span style="font-size: 2rem; vertical-align: middle;">
     Video en Youtube
   </span>
